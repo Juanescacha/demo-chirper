@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,17 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// We create the routes
+// verb URI action name
+// GET /chirps index chirps.index
+// POST /chirps store chirps.store
+
+// with command `php artisan route:list` we can see all the routes
+
+Route::resource('chirps', ChirpController::class)
+	->only(['index', 'store'])
+	->middleware('auth','verified');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
